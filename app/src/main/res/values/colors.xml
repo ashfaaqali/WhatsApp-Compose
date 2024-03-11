@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_color">#075E54</color> <!-- WhatsApp's primary color -->
+    <color name="secondary_color">#128C7E</color> <!-- WhatsApp's secondary color -->
+    <color name="accent_color">#25D366</color> <!-- WhatsApp's accent color -->
+    <color name="light_gray">#ECE5DD</color> <!-- WhatsApp's light gray background color -->
+    <color name="dark_gray">#1C1C1C</color> <!-- WhatsApp's dark gray background color -->
+    <color name="black">#000000</color> <!-- WhatsApp's primary text color -->
+</resources>
