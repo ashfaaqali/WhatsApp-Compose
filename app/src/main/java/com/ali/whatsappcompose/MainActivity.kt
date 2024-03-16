@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
@@ -17,6 +18,8 @@ import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -51,9 +54,13 @@ class MainActivity : ComponentActivity() {
             WhatsappComposeTheme {
                 val pagerState = rememberPagerState(pageCount = 3)
                 Scaffold(
-                    topBar = { Toolbar() }
+                    topBar = { Toolbar() },
+                    floatingActionButton = { FabButton() }
                 ) {
-                    Column(Modifier.padding(it)) {
+                    Column(
+                        modifier = Modifier
+                            .padding(it)
+                    ) {
                         Tabs(pagerState = pagerState)
                         TabsContent(pagerState = pagerState, recentChatsViewModel)
                     }
@@ -169,12 +176,29 @@ fun TabsContent(pagerState: PagerState, recentChatsViewModel: RecentChatsViewMod
     HorizontalPager(
         state = pagerState,
         verticalAlignment = Alignment.Top,
-        modifier = Modifier.padding(4.dp)
+        modifier = Modifier
+            .padding(4.dp)
+            .fillMaxSize(1f)
     ) { page ->
         when (page) {
             0 -> RecentChats(recentChatsViewModel)
             1 -> Updates(tabName = "Updates")
             2 -> Calls(tabName = "Calls")
         }
+    }
+}
+
+@Preview
+@Composable
+fun FabButton() {
+    FloatingActionButton(
+        onClick = {}, modifier = Modifier.padding(8.dp),
+        containerColor = PrimaryColor
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_chat),
+            contentDescription = null,
+            tint = Color.White,
+        )
     }
 }
