@@ -3,6 +3,7 @@ package com.ali.whatsappcompose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
@@ -22,17 +24,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ali.whatsappcompose.presentation.screens.Calls
 import com.ali.whatsappcompose.presentation.screens.RecentChats
 import com.ali.whatsappcompose.presentation.screens.Updates
+import com.ali.whatsappcompose.presentation.viewmodel.RecentChatsViewModel
 import com.ali.whatsappcompose.ui.theme.PrimaryColor
 import com.ali.whatsappcompose.ui.theme.WhatsappComposeTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -43,14 +42,28 @@ import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+    private val recentChatsViewModel: RecentChatsViewModel by viewModels()
+
     @OptIn(ExperimentalPagerApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             WhatsappComposeTheme {
-                Toolbar()
+                val pagerState = rememberPagerState(pageCount = 3)
+                Scaffold(
+                    topBar = { Toolbar() }
+                ) {
+                    Column(Modifier.padding(it)) {
+                        Tabs(pagerState = pagerState)
+                        TabsContent(pagerState = pagerState, recentChatsViewModel)
+                    }
+                }
             }
         }
+        recentChatsViewModel.loadRecentChatsFromAssets(
+            context = applicationContext,
+            fileName = "recentChats.json"
+        )
     }
 }
 
@@ -58,13 +71,10 @@ class MainActivity : ComponentActivity() {
 @ExperimentalPagerApi
 @Composable
 fun Toolbar() {
-
-    val pagerState = rememberPagerState(pageCount = 3)
-
     Column(
         modifier = Modifier.background(Color.White)
     ) {
-        TopAppBar (backgroundColor = PrimaryColor) {
+        TopAppBar(backgroundColor = PrimaryColor) {
 
             Column(
                 modifier = Modifier.fillMaxSize(),
@@ -109,8 +119,6 @@ fun Toolbar() {
                 }
             }
         }
-        Tabs(pagerState = pagerState)
-        TabsContent(pagerState = pagerState)
     }
 }
 
@@ -157,33 +165,16 @@ fun Tabs(pagerState: PagerState) {
 
 @ExperimentalPagerApi
 @Composable
-fun TabsContent(pagerState: PagerState) {
-    HorizontalPager(state = pagerState) { page ->
+fun TabsContent(pagerState: PagerState, recentChatsViewModel: RecentChatsViewModel) {
+    HorizontalPager(
+        state = pagerState,
+        verticalAlignment = Alignment.Top,
+        modifier = Modifier.padding(4.dp)
+    ) { page ->
         when (page) {
-            0 -> RecentChats(tabName = "Recent Chats")
+            0 -> RecentChats(recentChatsViewModel)
             1 -> Updates(tabName = "Updates")
             2 -> Calls(tabName = "Calls")
         }
     }
 }
-
-//@Composable
-//fun TabContentScreen(data: String) {
-//    Column(
-//        modifier = Modifier.fillMaxSize(),
-//        horizontalAlignment = Alignment.CenterHorizontally,
-//        verticalArrangement = Arrangement.Center
-//    ) {
-//        Text(
-//            text = data,
-//
-//            style = MaterialTheme.typography.h5,
-//
-//            color = greenColor,
-//
-//            fontWeight = FontWeight.Bold,
-//
-//            textAlign = TextAlign.Center
-//        )
-//    }
-//}

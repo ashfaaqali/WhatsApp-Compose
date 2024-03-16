@@ -1,30 +1,24 @@
 package com.ali.whatsappcompose.presentation.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import com.ali.whatsappcompose.presentation.viewmodel.RecentChatsViewModel
 
 @Composable
-fun RecentChats(tabName: String) {
-     Column(
-         modifier = Modifier.fillMaxSize(),
-         horizontalAlignment = Alignment.CenterHorizontally,
-         verticalArrangement = Arrangement.Center
-     ) {
-         Text(
-             text = tabName,
-             style = MaterialTheme.typography.bodyMedium,
-             color =  Color.Black,
-             fontFamily = FontFamily.Monospace,
-             fontWeight = FontWeight.Bold
-         )
-     }
+fun RecentChats(viewModel: RecentChatsViewModel) {
+    val recentChats by viewModel.recentChats.observeAsState(initial = emptyList())
+
+    if (recentChats.isNotEmpty()) {
+        LazyColumn(content = {
+            items(recentChats) { chat ->
+                RecentChatsItem(recentChat = chat)
+            }
+        })
+    } else {
+        Text(text = "Loading...")
+    }
 }
