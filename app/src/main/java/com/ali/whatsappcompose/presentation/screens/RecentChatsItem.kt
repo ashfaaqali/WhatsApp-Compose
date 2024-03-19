@@ -1,6 +1,7 @@
 package com.ali.whatsappcompose.presentation.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,10 +22,11 @@ import com.ali.whatsappcompose.R
 import com.ali.whatsappcompose.data.model.RecentChats
 
 @Composable
-fun RecentChatsItem(recentChat: RecentChats) {
+fun RecentChatsItem(recentChat: RecentChats, onClick: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth()
-            .padding(10.dp),
+            .padding(10.dp)
+            .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
