@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.ali.whatsappcompose.data.model.RecentChats
 import org.json.JSONObject
 
-class RecentChatsViewModel(): ViewModel() {
+class RecentChatsViewModel : ViewModel() {
     private val _recentChats = MutableLiveData<List<RecentChats>>()
     val recentChats: LiveData<List<RecentChats>> = _recentChats
 
