@@ -15,9 +15,15 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders["file_provider"] =  "com.ali.whatsappcompose"
+
         vectorDrawables {
             useSupportLibrary = true
         }
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
 
     buildTypes {
@@ -50,6 +56,10 @@ android {
 }
 
 dependencies {
+
+    // CometChat
+    implementation("com.cometchat:chat-uikit-android:4.3.4")
+
     // Paging Compose
     implementation ("com.google.accompanist:accompanist-pager:0.13.0")
     implementation ("com.google.accompanist:accompanist-pager-indicators:0.13.0")

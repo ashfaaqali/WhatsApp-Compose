@@ -14,14 +14,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ContactsScreen(tabName: String) {
+fun ContactsScreen(onClick: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = tabName,
+            text = "Contacts",
             style = MaterialTheme.typography.bodyMedium,
             color =  Color.White,
             fontFamily = FontFamily.Monospace,
